@@ -35,14 +35,14 @@ import org.thehellnet.tools.freerouting.board.SearchTreeObject;
 
 
 /**
- * Some consistancy checking on a routing org.thehellnet.tools.freerouting.board.
+ * Some consistancy checking on a routing board.
  *
  * @author  Alfons Wirtz
  */
 public class Validate
 {
     /**
-     * Does some consistancy checking on the routing org.thehellnet.tools.freerouting.board and may be some
+     * Does some consistancy checking on the routing board and may be some
      * other actions.
      * Returns false, if problems were detected.
      */

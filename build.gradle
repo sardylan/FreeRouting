@@ -1,5 +1,5 @@
 group "org.thehellnet.tools"
-version "0.0.0"
+version "1.2.43"
 
 apply plugin: "java"
 apply plugin: "groovy"
@@ -15,7 +15,8 @@ repositories {
 }
 
 task fatJar(type: Jar) {
-    archiveName = project.name + ".jar"
+//    archiveName = sprintf "%s-%s.jar", project.name, project.version
+    archiveName = sprintf "%s.jar", project.name
 
     manifest {
         attributes "Implementation-Title": "FreeRouting",
