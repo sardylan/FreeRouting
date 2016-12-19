@@ -114,7 +114,7 @@ public class WindowNetDemonstrations extends WindowNetSamples
         {
             void perform(BoardFrame p_board_frame, String p_archive_name)
             {
-                p_board_frame.board_panel.board_handling.start_batch_autorouter();
+                p_board_frame.boardPanel.boardHandling.start_batch_autorouter();
             }
         },
         

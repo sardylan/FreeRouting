@@ -48,7 +48,7 @@ public class WindowPadstacks extends WindowObjectListWithFilter
      */
     protected void fill_list()
     {
-        Padstacks padstacks = this.board_frame.board_panel.board_handling.get_routing_board().library.padstacks;
+        Padstacks padstacks = this.board_frame.boardPanel.boardHandling.get_routing_board().library.padstacks;
         Padstack[] sorted_arr = new Padstack[padstacks.count()];
         for (int i = 0; i < sorted_arr.length; ++i)
         {
@@ -74,7 +74,7 @@ public class WindowPadstacks extends WindowObjectListWithFilter
         {
             padstack_list.add((Padstack)selected_padstacks[i]);
         }
-        org.thehellnet.tools.freerouting.board.RoutingBoard routing_board = board_frame.board_panel.board_handling.get_routing_board();
+        org.thehellnet.tools.freerouting.board.RoutingBoard routing_board = board_frame.boardPanel.boardHandling.get_routing_board();
         java.util.Set<org.thehellnet.tools.freerouting.board.Item> board_instances = new java.util.TreeSet<org.thehellnet.tools.freerouting.board.Item>();
         java.util.Iterator<UndoableObjects.UndoableObjectNode> it = routing_board.item_list.start_read_object();
         for(;;)
@@ -97,7 +97,7 @@ public class WindowPadstacks extends WindowObjectListWithFilter
                 }
             }
         }
-        board_frame.board_panel.board_handling.select_items(board_instances);
-        board_frame.board_panel.board_handling.zoom_selection();
+        board_frame.boardPanel.boardHandling.select_items(board_instances);
+        board_frame.boardPanel.boardHandling.zoom_selection();
     }
 }

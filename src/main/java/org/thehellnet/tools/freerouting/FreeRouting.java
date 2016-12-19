@@ -13,6 +13,11 @@ public final class FreeRouting {
 
     public static void main(String[] args) {
         logger.info("Starting Main Application");
-        MainApplication.main(args);
+
+        try {
+            MainApplication.main(args);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
     }
 }

@@ -30,12 +30,12 @@ public class WindowLayerVisibility extends WindowVisibility
     /** Returns a new instance of LayerVisibilityFrame */
     public static WindowLayerVisibility get_instance(BoardFrame p_board_frame)
     {
-        BoardPanel board_panel = p_board_frame.board_panel;
+        BoardPanel board_panel = p_board_frame.boardPanel;
         java.util.ResourceBundle resources = 
                 java.util.ResourceBundle.getBundle("gui/Default", p_board_frame.get_locale());
         String title = resources.getString("layer_visibility");
         String header_message = resources.getString("layer_visibility_header");
-        org.thehellnet.tools.freerouting.board.LayerStructure layer_structure = board_panel.board_handling.get_routing_board().layer_structure;
+        org.thehellnet.tools.freerouting.board.LayerStructure layer_structure = board_panel.boardHandling.get_routing_board().layer_structure;
         String [] message_arr = new String [layer_structure.arr.length];
         for (int i = 0; i < message_arr.length; ++i)
         {
@@ -44,7 +44,7 @@ public class WindowLayerVisibility extends WindowVisibility
         WindowLayerVisibility result = new WindowLayerVisibility(p_board_frame, title, header_message, message_arr);
         for (int i = 0; i < message_arr.length; ++i)
         {
-            result.set_slider_value(i, board_panel.board_handling.graphics_context.get_raw_layer_visibility(i));
+            result.set_slider_value(i, board_panel.boardHandling.graphics_context.get_raw_layer_visibility(i));
         }
         p_board_frame.set_context_sensitive_help(result, "WindowDisplay_LayerVisibility");
         return result;

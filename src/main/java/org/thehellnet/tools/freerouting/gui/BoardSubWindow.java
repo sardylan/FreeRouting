@@ -21,25 +21,23 @@
 
 package org.thehellnet.tools.freerouting.gui;
 
+import javax.swing.*;
+
 /**
  * Subwindows of the org.thehellnet.tools.freerouting.board frame.
  *
  * @author Alfons Wirtz
  */
-public class BoardSubWindow extends javax.swing.JFrame
-{
-  
-    public void parent_iconified()
-    {
-        this.visible_before_iconifying = this.isVisible();
+public class BoardSubWindow extends JFrame {
+
+    private boolean visibleBeforeIconifying = false;
+
+    public void parentIconified() {
+        this.visibleBeforeIconifying = this.isVisible();
         this.setVisible(false);
     }
-    
-    public void parent_deiconified()
-    {
-        this.setVisible(this.visible_before_iconifying);
+
+    public void parentDeiconified() {
+        this.setVisible(this.visibleBeforeIconifying);
     }
-    
-    
-    private boolean visible_before_iconifying = false; 
 }

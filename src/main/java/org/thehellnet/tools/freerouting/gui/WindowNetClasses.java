@@ -44,7 +44,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
         this.main_panel = new javax.swing.JPanel();
         this.main_panel.setLayout(new java.awt.BorderLayout());
 
-        org.thehellnet.tools.freerouting.board.BasicBoard routing_board = p_board_frame.board_panel.board_handling.get_routing_board();
+        org.thehellnet.tools.freerouting.board.BasicBoard routing_board = p_board_frame.boardPanel.boardHandling.get_routing_board();
 
         this.cl_class_combo_box = new javax.swing.JComboBox();
         this.via_rule_combo_box = new javax.swing.JComboBox();
@@ -162,7 +162,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
 
     private void add_combobox_items()
     {
-        org.thehellnet.tools.freerouting.board.RoutingBoard routing_board = board_frame.board_panel.board_handling.get_routing_board();
+        org.thehellnet.tools.freerouting.board.RoutingBoard routing_board = board_frame.boardPanel.boardHandling.get_routing_board();
         for (int i = 0; i < routing_board.rules.clearance_matrix.get_class_count(); ++i)
         {
             cl_class_combo_box.addItem(routing_board.rules.clearance_matrix.get_name(i));
@@ -205,7 +205,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
 
         public void actionPerformed(java.awt.event.ActionEvent p_evt)
         {
-            board_frame.board_panel.board_handling.get_routing_board().rules.append_net_class(board_frame.get_locale());
+            board_frame.boardPanel.boardHandling.get_routing_board().rules.append_net_class(board_frame.get_locale());
             adjust_table();
         }
     }
@@ -230,7 +230,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
             {
                 return;
             }
-            BoardRules board_rules = board_frame.board_panel.board_handling.get_routing_board().rules;
+            BoardRules board_rules = board_frame.boardPanel.boardHandling.get_routing_board().rules;
             NetClass net_rule = board_rules.net_classes.get((String) net_class_name);
             // Check, if net_rule is used in a net of the net list
             for (int i = 1; i < board_rules.nets.max_net_no(); ++i)
@@ -272,7 +272,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
             {
                 return;
             }
-            org.thehellnet.tools.freerouting.board.RoutingBoard routing_board = board_frame.board_panel.board_handling.get_routing_board();
+            org.thehellnet.tools.freerouting.board.RoutingBoard routing_board = board_frame.boardPanel.boardHandling.get_routing_board();
             NetClass[] selected_class_arr = new NetClass[selected_rows.length];
             for (int i = 0; i < selected_class_arr.length; ++i)
             {
@@ -309,8 +309,8 @@ public class WindowNetClasses extends BoardSavableSubWindow
                     selected_items.add(curr_item);
                 }
             }
-            board_frame.board_panel.board_handling.select_items(selected_items);
-            board_frame.board_panel.board_handling.zoom_selection();
+            board_frame.boardPanel.boardHandling.select_items(selected_items);
+            board_frame.boardPanel.boardHandling.zoom_selection();
         }
     }
 
@@ -324,7 +324,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
             {
                 return;
             }
-            org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.board_panel.board_handling;
+            org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.boardPanel.boardHandling;
             org.thehellnet.tools.freerouting.rules.BoardRules board_rules = board_handling.get_routing_board().rules;
             NetClass[] selected_class_arr = new NetClass[selected_rows.length];
             for (int i = 0; i < selected_class_arr.length; ++i)
@@ -346,7 +346,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
                 }
 
             }
-            board_frame.board_panel.repaint();
+            board_frame.boardPanel.repaint();
         }
     }
 
@@ -360,7 +360,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
             {
                 return;
             }
-            org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.board_panel.board_handling;
+            org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.boardPanel.boardHandling;
             org.thehellnet.tools.freerouting.rules.BoardRules board_rules = board_handling.get_routing_board().rules;
             NetClass[] selected_class_arr = new NetClass[selected_rows.length];
             for (int i = 0; i < selected_class_arr.length; ++i)
@@ -382,7 +382,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
                     }
                 }
             }
-            org.thehellnet.tools.freerouting.board.CoordinateTransform coordinate_transform = board_frame.board_panel.board_handling.coordinate_transform;
+            org.thehellnet.tools.freerouting.board.CoordinateTransform coordinate_transform = board_frame.boardPanel.boardHandling.coordinate_transform;
             WindowObjectInfo new_window =
                     WindowObjectInfo.display(resources.getString("contained_nets"), contained_nets, board_frame, coordinate_transform);
             java.awt.Point loc = getLocation();
@@ -448,7 +448,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
         /** Calculates the the valus in this table */
         public void set_values()
         {
-            org.thehellnet.tools.freerouting.rules.BoardRules board_rules = board_frame.board_panel.board_handling.get_routing_board().rules;
+            org.thehellnet.tools.freerouting.rules.BoardRules board_rules = board_frame.boardPanel.boardHandling.get_routing_board().rules;
             this.data = new Object[board_rules.net_classes.count()][];
             for (int i = 0; i < data.length; ++i)
             {
@@ -465,14 +465,14 @@ public class WindowNetClasses extends BoardSavableSubWindow
                 this.data[i][ColumnName.SHOVE_FIXED.ordinal()] = curr_net_class.is_shove_fixed() || !curr_net_class.get_pull_tight();
                 this.data[i][ColumnName.CYCLES_WITH_AREAS.ordinal()] = curr_net_class.get_ignore_cycles_with_areas();
                 double min_trace_length =
-                        board_frame.board_panel.board_handling.coordinate_transform.board_to_user(curr_net_class.get_minimum_trace_length());
+                        board_frame.boardPanel.boardHandling.coordinate_transform.board_to_user(curr_net_class.get_minimum_trace_length());
                 if (min_trace_length <= 0)
                 {
                     min_trace_length = 0;
                 }
                 this.data[i][ColumnName.MIN_TRACE_LENGTH.ordinal()] = (float) min_trace_length;
                 double max_trace_length =
-                        board_frame.board_panel.board_handling.coordinate_transform.board_to_user(curr_net_class.get_maximum_trace_length());
+                        board_frame.boardPanel.boardHandling.coordinate_transform.board_to_user(curr_net_class.get_maximum_trace_length());
                 if (max_trace_length <= 0)
                 {
                     max_trace_length = -1;
@@ -489,7 +489,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
         void set_trace_width_field(int p_rule_no, ComboBoxLayer.Layer p_layer)
         {
             Float trace_width;
-            org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.board_panel.board_handling;
+            org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.boardPanel.boardHandling;
             org.thehellnet.tools.freerouting.rules.BoardRules board_rules = board_handling.get_routing_board().rules;
             NetClass curr_net_class = board_rules.net_classes.get(p_rule_no);
             if (p_layer.index == ComboBoxLayer.ALL_LAYER_INDEX)
@@ -563,7 +563,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
 
         public void setValueAt(Object p_value, int p_row, int p_col)
         {
-            org.thehellnet.tools.freerouting.board.RoutingBoard routing_board = board_frame.board_panel.board_handling.get_routing_board();
+            org.thehellnet.tools.freerouting.board.RoutingBoard routing_board = board_frame.boardPanel.boardHandling.get_routing_board();
             BoardRules board_rules = routing_board.rules;
             Object net_class_name = getValueAt(p_row, ColumnName.NAME.ordinal());
             if (!(net_class_name instanceof String))
@@ -653,9 +653,9 @@ public class WindowNetClasses extends BoardSavableSubWindow
                     curr_value = (float) 0;
                     p_value = curr_value;
                 }
-                double min_trace_length = Math.round(board_frame.board_panel.board_handling.coordinate_transform.user_to_board(curr_value));
+                double min_trace_length = Math.round(board_frame.boardPanel.boardHandling.coordinate_transform.user_to_board(curr_value));
                 net_rule.set_minimum_trace_length(min_trace_length);
-                board_frame.board_panel.board_handling.recalculate_length_violations();
+                board_frame.boardPanel.boardHandling.recalculate_length_violations();
             }
             else if (p_col == ColumnName.MAX_TRACE_LENGTH.ordinal())
             {
@@ -684,9 +684,9 @@ public class WindowNetClasses extends BoardSavableSubWindow
                     p_value = curr_value - 1;
                 }
 
-                double max_trace_length = Math.round(board_frame.board_panel.board_handling.coordinate_transform.user_to_board(curr_value));
+                double max_trace_length = Math.round(board_frame.boardPanel.boardHandling.coordinate_transform.user_to_board(curr_value));
                 net_rule.set_maximum_trace_length(max_trace_length);
-                board_frame.board_panel.board_handling.recalculate_length_violations();
+                board_frame.boardPanel.boardHandling.recalculate_length_violations();
             }
             else if (p_col == ColumnName.CLEARANCE_CLASS.ordinal())
             {
@@ -738,7 +738,7 @@ public class WindowNetClasses extends BoardSavableSubWindow
                 }
                 else
                 {
-                    curr_half_width = (int) Math.round(board_frame.board_panel.board_handling.coordinate_transform.user_to_board(0.5 * curr_value));
+                    curr_half_width = (int) Math.round(board_frame.boardPanel.boardHandling.coordinate_transform.user_to_board(0.5 * curr_value));
                     if (curr_half_width <= 0)
                     {
                         return;

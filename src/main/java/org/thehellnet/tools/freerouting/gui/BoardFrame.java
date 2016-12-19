@@ -63,7 +63,7 @@ public class BoardFrame extends javax.swing.JFrame
             WindowMessage.show("board_frame is null");
             return null;
         }
-        java.io.InputStream input_stream = design_file.get_input_stream();
+        java.io.InputStream input_stream = design_file.getInputStream();
         boolean read_ok =  board_frame.read(input_stream, true, null);
         if (!read_ok)
         {
@@ -146,8 +146,8 @@ public class BoardFrame extends javax.swing.JFrame
         this.scroll_pane.setVerifyInputWhenFocusTarget(false);
         this.add(scroll_pane, java.awt.BorderLayout.CENTER);
         
-        this.board_panel = new BoardPanel(screen_messages, this, this.is_web_start, p_locale);
-        this.scroll_pane.setViewportView(board_panel);
+        this.boardPanel = new BoardPanel(screen_messages, this, this.is_web_start, p_locale);
+        this.scroll_pane.setViewportView(boardPanel);
         
         this.setTitle(resources.getString("title"));
         this.addWindowListener(new WindowStateListener());
@@ -160,7 +160,7 @@ public class BoardFrame extends javax.swing.JFrame
      */
     void read_logfile(java.io.InputStream p_input_stream)
     {
-        board_panel.board_handling.read_logfile(p_input_stream);
+        boardPanel.boardHandling.read_logfile(p_input_stream);
     }
     
     
@@ -174,7 +174,7 @@ public class BoardFrame extends javax.swing.JFrame
         java.awt.Point viewport_position = null;
         if (p_is_import)
         {
-            DsnFile.ReadResult read_result = board_panel.board_handling.import_design(p_input_stream, this.board_observers,
+            DsnFile.ReadResult read_result = boardPanel.boardHandling.import_design(p_input_stream, this.board_observers,
                     this.item_id_no_generator, this.test_level);
             if (read_result !=  DsnFile.ReadResult.OK)
             {
@@ -205,7 +205,7 @@ public class BoardFrame extends javax.swing.JFrame
             {
                 return false;
             }
-            boolean read_ok = board_panel.board_handling.read_design(object_stream, this.test_level);
+            boolean read_ok = boardPanel.boardHandling.read_design(object_stream, this.test_level);
             if (!read_ok)
             {
                 return false;
@@ -241,19 +241,19 @@ public class BoardFrame extends javax.swing.JFrame
             return false;
         }
         
-        java.awt.Dimension panel_size = board_panel.board_handling.graphics_context.get_panel_size();
-        board_panel.setSize(panel_size);
-        board_panel.setPreferredSize(panel_size);
+        java.awt.Dimension panel_size = boardPanel.boardHandling.graphics_context.get_panel_size();
+        boardPanel.setSize(panel_size);
+        boardPanel.setPreferredSize(panel_size);
         if (viewport_position != null)
         {
-            board_panel.set_viewport_position(viewport_position);
+            boardPanel.set_viewport_position(viewport_position);
         }
-        board_panel.create_popup_menus();
-        board_panel.init_colors();
-        board_panel.board_handling.create_ratsnest();
+        boardPanel.create_popup_menus();
+        boardPanel.init_colors();
+        boardPanel.boardHandling.create_ratsnest();
         this.hilight_selected_button();
-        this.toolbar_panel.unit_factor_field.setValue(board_panel.board_handling.coordinate_transform.user_unit_factor);
-        this.toolbar_panel.unit_combo_box.setSelectedItem(board_panel.board_handling.coordinate_transform.user_unit);
+        this.toolbar_panel.unit_factor_field.setValue(boardPanel.boardHandling.coordinate_transform.user_unit_factor);
+        this.toolbar_panel.unit_combo_box.setSelectedItem(boardPanel.boardHandling.coordinate_transform.user_unit);
         this.setVisible(true);
         if (p_is_import)
         {
@@ -280,7 +280,7 @@ public class BoardFrame extends javax.swing.JFrame
             }
             if (defaults_file_found)
             {
-                boolean read_ok = org.thehellnet.tools.freerouting.gui.GUIDefaultsFile.read(this, board_panel.board_handling, input_stream);
+                boolean read_ok = org.thehellnet.tools.freerouting.gui.GUIDefaultsFile.read(this, boardPanel.boardHandling, input_stream);
                 if (!read_ok)
                 {
                     screen_messages.set_status_message(resources.getString("error_1"));
@@ -327,14 +327,14 @@ public class BoardFrame extends javax.swing.JFrame
             screen_messages.set_status_message(resources.getString("error_3"));
             return false;
         }
-        boolean save_ok = board_panel.board_handling.save_design_file(object_stream);
+        boolean save_ok = boardPanel.boardHandling.save_design_file(object_stream);
         if (!save_ok)
         {
             return false;
         }
         try
         {
-            object_stream.writeObject(board_panel.get_viewport_position());
+            object_stream.writeObject(boardPanel.get_viewport_position());
             object_stream.writeObject(this.getLocation());
             object_stream.writeObject(this.getBounds());
         }
@@ -421,16 +421,16 @@ public class BoardFrame extends javax.swing.JFrame
     /** Sets the displayed region to the whole org.thehellnet.tools.freerouting.board. */
     public void zoom_all()
     {
-        board_panel.board_handling.adjust_design_bounds();
-        java.awt.Rectangle display_rect = board_panel.get_viewport_bounds();
-        java.awt.Rectangle design_bounds = board_panel.board_handling.graphics_context.get_design_bounds();
+        boardPanel.boardHandling.adjust_design_bounds();
+        java.awt.Rectangle display_rect = boardPanel.get_viewport_bounds();
+        java.awt.Rectangle design_bounds = boardPanel.boardHandling.graphics_context.get_design_bounds();
         double width_factor = display_rect.getWidth() /design_bounds.getWidth();
         double height_factor = display_rect.getHeight() /design_bounds.getHeight();
         double zoom_factor =  Math.min(width_factor, height_factor);
-        java.awt.geom.Point2D zoom_center = board_panel.board_handling.graphics_context.get_design_center();
-        board_panel.zoom(zoom_factor, zoom_center);
-        java.awt.geom.Point2D new_vieport_center = board_panel.board_handling.graphics_context.get_design_center();
-        board_panel.set_viewport_center(new_vieport_center);
+        java.awt.geom.Point2D zoom_center = boardPanel.boardHandling.graphics_context.get_design_center();
+        boardPanel.zoom(zoom_factor, zoom_center);
+        java.awt.geom.Point2D new_vieport_center = boardPanel.boardHandling.graphics_context.get_design_center();
+        boardPanel.set_viewport_center(new_vieport_center);
         
     }
     
@@ -454,10 +454,10 @@ public class BoardFrame extends javax.swing.JFrame
                 curr_subwindow.board_frame_disposed();
             }
         }
-        if (board_panel.board_handling != null)
+        if (boardPanel.boardHandling != null)
         {
-            board_panel.board_handling.dispose();
-            board_panel.board_handling = null;
+            boardPanel.boardHandling.dispose();
+            boardPanel.boardHandling = null;
         }
         super.dispose();
     }
@@ -564,7 +564,7 @@ public class BoardFrame extends javax.swing.JFrame
      */
     public void set_board_background(java.awt.Color p_color)
     {
-        this.board_panel.setBackground(p_color);
+        this.boardPanel.setBackground(p_color);
     }
     
     /**
@@ -669,7 +669,7 @@ public class BoardFrame extends javax.swing.JFrame
     final BoardMenuBar menubar;
     
     /** The panel with the graphical representation of the org.thehellnet.tools.freerouting.board. */
-    final BoardPanel board_panel;
+    final BoardPanel boardPanel;
     
     /** The panel with the toolbars */
     private final BoardToolbar toolbar_panel;
@@ -760,13 +760,13 @@ public class BoardFrame extends javax.swing.JFrame
         {
             for (int i = 0; i < permanent_subwindows.length; ++i)
             {
-                permanent_subwindows[i].parent_iconified();
+                permanent_subwindows[i].parentIconified();
             }
             for (BoardSubWindow curr_subwindow : temporary_subwindows)
             {
                 if (curr_subwindow != null)
                 {
-                    curr_subwindow.parent_iconified();
+                    curr_subwindow.parentIconified();
                 }
             }
         }
@@ -777,14 +777,14 @@ public class BoardFrame extends javax.swing.JFrame
             {
                 if (permanent_subwindows[i] != null)
                 {
-                    permanent_subwindows[i].parent_deiconified();
+                    permanent_subwindows[i].parentDeiconified();
                 }
             }
             for (BoardSubWindow curr_subwindow : temporary_subwindows)
             {
                 if (curr_subwindow != null)
                 {
-                    curr_subwindow.parent_deiconified();
+                    curr_subwindow.parentDeiconified();
                 }
             }
         }

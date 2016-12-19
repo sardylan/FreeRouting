@@ -33,7 +33,7 @@ public class WindowSelectParameter extends BoardSavableSubWindow
     /** Creates a new instance of SelectWindow */
     public WindowSelectParameter(BoardFrame p_board_frame)
     {
-        this.board_handling = p_board_frame.board_panel.board_handling;
+        this.board_handling = p_board_frame.boardPanel.boardHandling;
         
         java.util.ResourceBundle resources = 
                 java.util.ResourceBundle.getBundle("gui/WindowSelectParameter", p_board_frame.get_locale());

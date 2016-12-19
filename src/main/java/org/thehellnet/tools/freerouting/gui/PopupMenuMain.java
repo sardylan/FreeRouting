@@ -43,7 +43,7 @@ class PopupMenuMain extends PopupMenuDisplay
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_panel.board_handling.select_items(board_panel.right_button_click_location);
+                board_panel.boardHandling.select_items(board_panel.right_button_click_location);
             }
         });
         
@@ -57,7 +57,7 @@ class PopupMenuMain extends PopupMenuDisplay
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_panel.board_handling.start_route(board_panel.right_button_click_location);
+                board_panel.boardHandling.start_route(board_panel.right_button_click_location);
             }
         });
         
@@ -75,11 +75,11 @@ class PopupMenuMain extends PopupMenuDisplay
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_panel.board_handling.start_tile(board_panel.right_button_click_location);
+                board_panel.boardHandling.start_tile(board_panel.right_button_click_location);
             }
         });
         
-        if (board_panel.board_handling.get_routing_board().get_test_level() != org.thehellnet.tools.freerouting.board.TestLevel.RELEASE_VERSION)
+        if (board_panel.boardHandling.get_routing_board().get_test_level() != org.thehellnet.tools.freerouting.board.TestLevel.RELEASE_VERSION)
         {
             create_obstacle_menu.add(create_tile_item);
         }
@@ -90,7 +90,7 @@ class PopupMenuMain extends PopupMenuDisplay
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_panel.board_handling.start_circle(board_panel.right_button_click_location);
+                board_panel.boardHandling.start_circle(board_panel.right_button_click_location);
             }
         });
         
@@ -102,7 +102,7 @@ class PopupMenuMain extends PopupMenuDisplay
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_panel.board_handling.start_polygonshape_item( board_panel.right_button_click_location);
+                board_panel.boardHandling.start_polygonshape_item( board_panel.right_button_click_location);
             }
         });
         
@@ -114,7 +114,7 @@ class PopupMenuMain extends PopupMenuDisplay
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_panel.board_handling.start_adding_hole(board_panel.right_button_click_location);
+                board_panel.boardHandling.start_adding_hole(board_panel.right_button_click_location);
             }
         });
         
@@ -124,7 +124,7 @@ class PopupMenuMain extends PopupMenuDisplay
         
         // Insert the pin swap item.
         
-        if (board_panel.board_handling.get_routing_board().library.logical_parts.count() > 0)
+        if (board_panel.boardHandling.get_routing_board().library.logical_parts.count() > 0)
         {
             // the org.thehellnet.tools.freerouting.board contains swappable gates or pins
             javax.swing.JMenuItem swap_pin_item = new javax.swing.JMenuItem();
@@ -133,7 +133,7 @@ class PopupMenuMain extends PopupMenuDisplay
             {
                 public void actionPerformed(java.awt.event.ActionEvent evt)
                 {
-                    board_panel.board_handling.swap_pin(board_panel.right_button_click_location);
+                    board_panel.boardHandling.swap_pin(board_panel.right_button_click_location);
                 }
             });
             

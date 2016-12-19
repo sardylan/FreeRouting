@@ -96,7 +96,7 @@ public class WindowEditVias extends BoardSavableSubWindow
     
     private void add_combobox_items()
     {
-        org.thehellnet.tools.freerouting.board.RoutingBoard routing_board = board_frame.board_panel.board_handling.get_routing_board();
+        org.thehellnet.tools.freerouting.board.RoutingBoard routing_board = board_frame.boardPanel.boardHandling.get_routing_board();
         for (int i = 0; i < routing_board.rules.clearance_matrix.get_class_count(); ++i)
         {
             cl_class_combo_box.addItem(routing_board.rules.clearance_matrix.get_name(i));
@@ -140,7 +140,7 @@ public class WindowEditVias extends BoardSavableSubWindow
     {
         public void actionPerformed(java.awt.event.ActionEvent p_evt)
         {
-            org.thehellnet.tools.freerouting.board.RoutingBoard routing_board = board_frame.board_panel.board_handling.get_routing_board();
+            org.thehellnet.tools.freerouting.board.RoutingBoard routing_board = board_frame.boardPanel.boardHandling.get_routing_board();
             ViaInfos via_infos = routing_board.rules.via_infos;
             Integer no = 1;
             String new_name = null;
@@ -182,7 +182,7 @@ public class WindowEditVias extends BoardSavableSubWindow
             {
                 return;
             }
-            BoardRules board_rules = board_frame.board_panel.board_handling.get_routing_board().rules;
+            BoardRules board_rules = board_frame.boardPanel.boardHandling.get_routing_board().rules;
             ViaInfo via_info = board_rules.via_infos.get((String) via_name);
             // Check, if via_info is used in a via rule.
             for (org.thehellnet.tools.freerouting.rules.ViaRule curr_rule : board_rules.via_rules)
@@ -217,7 +217,7 @@ public class WindowEditVias extends BoardSavableSubWindow
             {
                column_names[i] =  resources.getString((ColumnName.values()[i]).toString());
             }
-            org.thehellnet.tools.freerouting.rules.BoardRules board_rules = board_frame.board_panel.board_handling.get_routing_board().rules;
+            org.thehellnet.tools.freerouting.rules.BoardRules board_rules = board_frame.boardPanel.boardHandling.get_routing_board().rules;
             data = new Object[board_rules.via_infos.count()][];
             for (int i = 0; i < data.length; ++i)
             {
@@ -229,7 +229,7 @@ public class WindowEditVias extends BoardSavableSubWindow
         /** Calculates the the valus in this table */
         public void set_values()
         {
-            org.thehellnet.tools.freerouting.rules.BoardRules board_rules = board_frame.board_panel.board_handling.get_routing_board().rules;
+            org.thehellnet.tools.freerouting.rules.BoardRules board_rules = board_frame.boardPanel.boardHandling.get_routing_board().rules;
             for (int i = 0; i < data.length; ++i)
             {
                 ViaInfo curr_via = board_rules.via_infos.get(i);
@@ -262,7 +262,7 @@ public class WindowEditVias extends BoardSavableSubWindow
         
         public void setValueAt(Object p_value, int p_row, int p_col)
         {
-            org.thehellnet.tools.freerouting.board.RoutingBoard routing_board =  board_frame.board_panel.board_handling.get_routing_board();
+            org.thehellnet.tools.freerouting.board.RoutingBoard routing_board =  board_frame.boardPanel.boardHandling.get_routing_board();
             BoardRules board_rules = routing_board.rules;
             Object via_name = getValueAt(p_row, ColumnName.NAME.ordinal());
             if (!(via_name instanceof String))

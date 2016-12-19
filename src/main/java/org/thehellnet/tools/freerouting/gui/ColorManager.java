@@ -55,7 +55,7 @@ public class ColorManager extends BoardSavableSubWindow
     /** Creates a new instance of ColorManager */
     public ColorManager(BoardFrame p_board_frame)
     {
-        GraphicsContext graphics_context = p_board_frame.board_panel.board_handling.graphics_context;
+        GraphicsContext graphics_context = p_board_frame.boardPanel.boardHandling.graphics_context;
         java.util.ResourceBundle resources = 
                 java.util.ResourceBundle.getBundle("gui/Default", p_board_frame.get_locale());
         this.setTitle(resources.getString("color_manager"));

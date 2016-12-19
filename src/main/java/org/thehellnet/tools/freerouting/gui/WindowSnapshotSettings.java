@@ -32,7 +32,7 @@ public class WindowSnapshotSettings extends BoardSavableSubWindow
     /** Creates a new instance of WindowSnapshotSettings */
     public WindowSnapshotSettings(BoardFrame p_board_frame)
     {
-        this.board_handling = p_board_frame.board_panel.board_handling;
+        this.board_handling = p_board_frame.boardPanel.boardHandling;
         
         java.util.ResourceBundle resources = 
                 java.util.ResourceBundle.getBundle("gui/WindowSnapshotSettings", p_board_frame.get_locale());

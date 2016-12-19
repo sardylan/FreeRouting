@@ -35,7 +35,7 @@ public class PopupMenuDynamicRoute extends PopupMenuDisplay
         
         java.util.ResourceBundle resources = 
                 java.util.ResourceBundle.getBundle("gui/Default", p_board_frame.get_locale());
-        org.thehellnet.tools.freerouting.board.LayerStructure layer_structure = board_panel.board_handling.get_routing_board().layer_structure;
+        org.thehellnet.tools.freerouting.board.LayerStructure layer_structure = board_panel.boardHandling.get_routing_board().layer_structure;
         
         
         javax.swing.JMenuItem end_route_item = new javax.swing.JMenuItem();
@@ -44,7 +44,7 @@ public class PopupMenuDynamicRoute extends PopupMenuDisplay
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_panel.board_handling.return_from_state();
+                board_panel.boardHandling.return_from_state();
             }
         });
         
@@ -56,7 +56,7 @@ public class PopupMenuDynamicRoute extends PopupMenuDisplay
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_panel.board_handling.cancel_state();
+                board_panel.boardHandling.cancel_state();
             }
         });
         
@@ -68,7 +68,7 @@ public class PopupMenuDynamicRoute extends PopupMenuDisplay
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_panel.board_handling.generate_snapshot();
+                board_panel.boardHandling.generate_snapshot();
             }
         });
         
@@ -84,7 +84,7 @@ public class PopupMenuDynamicRoute extends PopupMenuDisplay
             this.change_layer_menu = null;
         }
         
-        org.thehellnet.tools.freerouting.board.Layer curr_layer = layer_structure.arr[board_panel.board_handling.settings.get_layer()];
+        org.thehellnet.tools.freerouting.board.Layer curr_layer = layer_structure.arr[board_panel.boardHandling.settings.get_layer()];
         disable_layer_item(layer_structure.get_signal_layer_no(curr_layer));
     }
     

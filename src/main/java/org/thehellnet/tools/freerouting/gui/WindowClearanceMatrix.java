@@ -52,7 +52,7 @@ public class WindowClearanceMatrix extends BoardSavableSubWindow
         layer_label.setToolTipText(resources.getString("layer_tooltip"));
         north_panel.add(layer_label);
         
-        org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.board_panel.board_handling;
+        org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.boardPanel.boardHandling;
         layer_combo_box = new ComboBoxLayer(board_handling.get_routing_board().layer_structure, p_board_frame.get_locale());
         north_panel.add(this.layer_combo_box);
         this.layer_combo_box.addActionListener(new ComboBoxListener());
@@ -96,7 +96,7 @@ public class WindowClearanceMatrix extends BoardSavableSubWindow
      */
     public void refresh()
     {
-        org.thehellnet.tools.freerouting.board.BasicBoard routing_board = this.board_frame.board_panel.board_handling.get_routing_board();
+        org.thehellnet.tools.freerouting.board.BasicBoard routing_board = this.board_frame.boardPanel.boardHandling.get_routing_board();
         if (this.clearance_table_model.getRowCount() != routing_board.rules.clearance_matrix.get_class_count())
         {
             this.adjust_clearance_table();
@@ -107,7 +107,7 @@ public class WindowClearanceMatrix extends BoardSavableSubWindow
     
     private javax.swing.JPanel add_clearance_table(BoardFrame p_board_frame)
     {
-        this.clearance_table_model = new ClearanceTableModel(p_board_frame.board_panel.board_handling);
+        this.clearance_table_model = new ClearanceTableModel(p_board_frame.boardPanel.boardHandling);
         this.clearance_table = new javax.swing.JTable(clearance_table_model);
         
         // Put the clearance table into a scroll pane.
@@ -176,7 +176,7 @@ public class WindowClearanceMatrix extends BoardSavableSubWindow
                 break;
             }
         }
-        final org.thehellnet.tools.freerouting.board.BasicBoard routing_board  = this.board_frame.board_panel.board_handling.get_routing_board();
+        final org.thehellnet.tools.freerouting.board.BasicBoard routing_board  = this.board_frame.boardPanel.boardHandling.get_routing_board();
         final org.thehellnet.tools.freerouting.rules.ClearanceMatrix clearance_matrix = routing_board.rules.clearance_matrix;
         
         // Check, if the name exists already.
@@ -207,7 +207,7 @@ public class WindowClearanceMatrix extends BoardSavableSubWindow
      */
     private void prune_clearance_matrix()
     {
-        final org.thehellnet.tools.freerouting.board.BasicBoard routing_board = this.board_frame.board_panel.board_handling.get_routing_board();
+        final org.thehellnet.tools.freerouting.board.BasicBoard routing_board = this.board_frame.boardPanel.boardHandling.get_routing_board();
         ClearanceMatrix clearance_matrix = routing_board.rules.clearance_matrix;
         for (int i = clearance_matrix.get_class_count() - 1; i >= 2; --i)
         {
@@ -245,7 +245,7 @@ public class WindowClearanceMatrix extends BoardSavableSubWindow
      */
     private void adjust_clearance_table()
     {
-        this.clearance_table_model = new ClearanceTableModel(this.board_frame.board_panel.board_handling);
+        this.clearance_table_model = new ClearanceTableModel(this.board_frame.boardPanel.boardHandling);
         this.clearance_table = new javax.swing.JTable(clearance_table_model);
         this.main_panel.remove(this.center_panel);
         this.center_panel = add_clearance_table(this.board_frame);
@@ -278,7 +278,7 @@ public class WindowClearanceMatrix extends BoardSavableSubWindow
     private int max_name_length()
     {
         int result  = 1;
-        org.thehellnet.tools.freerouting.rules.ClearanceMatrix clearance_matrix = board_frame.board_panel.board_handling.get_routing_board().rules.clearance_matrix;
+        org.thehellnet.tools.freerouting.rules.ClearanceMatrix clearance_matrix = board_frame.boardPanel.boardHandling.get_routing_board().rules.clearance_matrix;
         for (int i = 0; i < clearance_matrix.get_class_count(); ++i)
         {
             result = Math.max(result, clearance_matrix.get_name(i).length());
@@ -393,7 +393,7 @@ public class WindowClearanceMatrix extends BoardSavableSubWindow
             
             // check, if there are items on the org.thehellnet.tools.freerouting.board assigned to clearance class i or j.
             
-            org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.board_panel.board_handling;
+            org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.boardPanel.boardHandling;
             org.thehellnet.tools.freerouting.datastructures.UndoableObjects item_list = board_handling.get_routing_board().item_list;
             boolean items_already_assigned_row = false;
             boolean items_already_assigned_column = false;
@@ -491,7 +491,7 @@ public class WindowClearanceMatrix extends BoardSavableSubWindow
          */
         private void set_values(int p_layer)
         {
-            org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.board_panel.board_handling;
+            org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.boardPanel.boardHandling;
             ClearanceMatrix clearance_matrix = board_handling.get_routing_board().rules.clearance_matrix;
             
             for (int i = 0; i < clearance_matrix.get_class_count(); ++i)

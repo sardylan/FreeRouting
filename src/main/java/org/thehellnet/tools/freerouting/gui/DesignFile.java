@@ -48,7 +48,7 @@ public class DesignFile
      * Shows a file chooser for opening a design file.
      * If p_is_webstart there are security restrictions because the application was opened with java web start.
      */
-    public static DesignFile open_dialog(boolean p_is_webstart, String p_design_dir_name)
+    public static DesignFile openDialog(boolean p_is_webstart, String p_design_dir_name)
     {
         DesignFile result;
         if (p_is_webstart)
@@ -98,7 +98,7 @@ public class DesignFile
     /**
      * Gets an InputStream from the file. Returns null, if the algorithm failed.
      */
-    public java.io.InputStream get_input_stream()
+    public java.io.InputStream getInputStream()
     {
         java.io.InputStream result;
         if (this.is_webstart)
@@ -172,7 +172,7 @@ public class DesignFile
             javax.jnlp.FileContents new_file_contents;
             java.io.ByteArrayOutputStream output_stream = new java.io.ByteArrayOutputStream();
 
-            if (p_board_frame.board_panel.board_handling.export_to_dsn_file(output_stream, design_name, false))
+            if (p_board_frame.boardPanel.boardHandling.export_to_dsn_file(output_stream, design_name, false))
             {
                 java.io.InputStream input_stream = new java.io.ByteArrayInputStream(output_stream.toByteArray());
                 new_file_contents = WebStart.save_dialog(this.get_parent(), DesignFile.text_file_extensions,
@@ -243,7 +243,7 @@ public class DesignFile
             {
                 output_stream = null;
             }
-            if (p_board_frame.board_panel.board_handling.export_to_dsn_file(output_stream, design_name, false))
+            if (p_board_frame.boardPanel.boardHandling.export_to_dsn_file(output_stream, design_name, false))
             {
                 p_board_frame.screen_messages.set_status_message(resources.getString("message_4") + " " + new_file_name + " " + resources.getString("message_5"));
             }
@@ -290,7 +290,7 @@ public class DesignFile
                 output_stream = null;
             }
 
-            if (p_board_frame.board_panel.board_handling.export_specctra_session_file(design_file_name, output_stream))
+            if (p_board_frame.boardPanel.boardHandling.export_specctra_session_file(design_file_name, output_stream))
             {
                 p_board_frame.screen_messages.set_status_message(resources.getString("message_11") + " " +
                         output_file_name + " " + resources.getString("message_12"));
@@ -304,7 +304,7 @@ public class DesignFile
         }
         if (WindowMessage.confirm(resources.getString("confirm")))
         {
-            return write_rules_file(design_name, p_board_frame.board_panel.board_handling);
+            return write_rules_file(design_name, p_board_frame.boardPanel.boardHandling);
         }
         return true;
     }
@@ -361,7 +361,7 @@ public class DesignFile
             {
                 result = false;
             }
-            WebStart.delete_files(RULES_FILE_EXTENSION, null);
+            WebStart.deleteFiles(RULES_FILE_EXTENSION, null);
         }
         else
         {
@@ -402,7 +402,7 @@ public class DesignFile
                 java.util.ResourceBundle.getBundle("gui/BoardMenuFile", p_board_frame.get_locale());
         String design_file_name = get_name();
         java.io.ByteArrayOutputStream session_output_stream = new java.io.ByteArrayOutputStream();
-        if (!p_board_frame.board_panel.board_handling.export_specctra_session_file(design_file_name, session_output_stream))
+        if (!p_board_frame.boardPanel.boardHandling.export_specctra_session_file(design_file_name, session_output_stream))
         {
             return;
         }
@@ -435,7 +435,7 @@ public class DesignFile
                 output_stream = null;
             }
 
-            if (p_board_frame.board_panel.board_handling.export_eagle_session_file(input_stream, output_stream))
+            if (p_board_frame.boardPanel.boardHandling.export_eagle_session_file(input_stream, output_stream))
             {
                 p_board_frame.screen_messages.set_status_message(resources.getString("message_14") + " " + output_file_name + " " + resources.getString("message_15"));
             }
@@ -446,7 +446,7 @@ public class DesignFile
         }
         if (WindowMessage.confirm(resources.getString("confirm")))
         {
-            write_rules_file(design_name, p_board_frame.board_panel.board_handling);
+            write_rules_file(design_name, p_board_frame.boardPanel.boardHandling);
         }
     }
 
@@ -479,7 +479,7 @@ public class DesignFile
         }
         String session_file_name = file_name.replace(".dsn", ".ses");
 
-        if (!p_board_frame.board_panel.board_handling.export_specctra_session_file(file_name, output_stream))
+        if (!p_board_frame.boardPanel.boardHandling.export_specctra_session_file(file_name, output_stream))
         {
             return null;
         }
@@ -519,7 +519,7 @@ public class DesignFile
             String p_outfile_name, java.io.InputStream p_input_stream)
     {
         java.io.ByteArrayOutputStream output_stream = new java.io.ByteArrayOutputStream();
-        if (!p_board_frame.board_panel.board_handling.export_eagle_session_file(p_input_stream, output_stream))
+        if (!p_board_frame.boardPanel.boardHandling.export_eagle_session_file(p_input_stream, output_stream))
         {
             return null;
         }
@@ -583,7 +583,7 @@ public class DesignFile
         return null;
     }
 
-    public boolean is_created_from_text_file()
+    public boolean isCreatedFromTextFile()
     {
         return this.is_webstart || this.input_file != this.output_file;
     }

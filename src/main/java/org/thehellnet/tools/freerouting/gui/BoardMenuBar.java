@@ -58,7 +58,7 @@ class BoardMenuBar extends javax.swing.JMenuBar
         return menubar;
     }
     
-    void add_design_dependent_items()
+    void addDesignDependentItems()
     {
         this.file_menu.add_design_dependent_items();
     }

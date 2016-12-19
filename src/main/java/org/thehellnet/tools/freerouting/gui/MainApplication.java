@@ -20,321 +20,348 @@
  */
 package org.thehellnet.tools.freerouting.gui;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thehellnet.tools.freerouting.board.TestLevel;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 /**
- * Main application for creating frames with new or existing org.thehellnet.tools.freerouting.board designs.
+ * Main application for creating frames with new or existing board designs.
  *
  * @author Alfons Wirtz
  */
-public class MainApplication extends javax.swing.JFrame {
+public class MainApplication extends JFrame {
 
     static final String WEB_FILE_BASE_NAME = "http://www.freerouting.net/java/";
-    static final String VERSION_NUMBER_STRING = "1.2.43";
+    static final String VERSION_NUMBER_STRING = ResourceBundle.getBundle("version").getString("version");
 
     private static final boolean OFFLINE_ALLOWED = true;
     private static final TestLevel DEBUG_LEVEL = TestLevel.CRITICAL_DEBUGGING_OUTPUT;
+    private static final Logger logger = LoggerFactory.getLogger(MainApplication.class);
 
-    private final java.util.ResourceBundle resources;
-    private final javax.swing.JButton demonstration_button;
-    private final javax.swing.JButton sample_board_button;
-    private final javax.swing.JButton open_board_button;
-    private final javax.swing.JButton restore_defaults_button;
-    private final WindowNetSamples window_net_demonstrations;
-    private final WindowNetSamples window_net_sample_designs;
-    private final boolean is_test_version;
-    private final boolean is_webstart;
-    private final java.util.Locale locale;
+    private final ResourceBundle resources;
+    private final Locale locale;
+    private final WindowNetSamples windowNetDemonstrations;
+    private final WindowNetSamples windowNetSampleDesigns;
+    private final boolean isTestVersion;
+    private final boolean isWebStart;
 
-    private java.util.Collection<BoardFrame> board_frames = new java.util.LinkedList<BoardFrame>();
-    private String design_dir_name = null;
-    private javax.swing.JTextField message_field;
-    private javax.swing.JPanel main_panel;
+    private List<BoardFrame> boardFrames = new LinkedList<>();
+    private String designDirName = null;
+    private JTextField messageField;
 
-    public static void main(String p_args[]) {
-        boolean single_design_option = false;
+    public static void main(String args[]) {
+        logger.info("Application started");
+
+        boolean singleDesignOption = false;
         boolean test_version_option = false;
-        boolean session_file_option = false;
+        boolean sessionFileOption = false;
         boolean webstart_option = false;
-        String design_file_name = null;
+        String designFileName = null;
         String design_dir_name = null;
-        java.util.Locale current_locale = java.util.Locale.ENGLISH;
-        for (int i = 0; i < p_args.length; ++i) {
-            if (p_args[i].startsWith("-de")) {
-                if (p_args.length > i + 1 && !p_args[i + 1].startsWith("-")) {
-                    single_design_option = true;
-                    design_file_name = p_args[i + 1];
+        Locale currentLocale = Locale.ENGLISH;
+        for (int i = 0; i < args.length; ++i) {
+            if (args[i].startsWith("-de")) {
+                if (args.length > i + 1 && !args[i + 1].startsWith("-")) {
+                    singleDesignOption = true;
+                    designFileName = args[i + 1];
                 }
-            } else if (p_args[i].startsWith("-di")) {
-                if (p_args.length > i + 1 && !p_args[i + 1].startsWith("-")) {
-                    design_dir_name = p_args[i + 1];
+            } else if (args[i].startsWith("-di")) {
+                if (args.length > i + 1 && !args[i + 1].startsWith("-")) {
+                    design_dir_name = args[i + 1];
                 }
-            } else if (p_args[i].startsWith("-l")) {
-                if (p_args.length > i + 1 && p_args[i + 1].startsWith("d")) {
-                    current_locale = java.util.Locale.GERMAN;
+            } else if (args[i].startsWith("-l")) {
+                if (args.length > i + 1 && args[i + 1].startsWith("d")) {
+                    currentLocale = Locale.GERMAN;
                 }
-            } else if (p_args[i].startsWith("-s")) {
-                session_file_option = true;
-            } else if (p_args[i].startsWith("-w")) {
+            } else if (args[i].startsWith("-s")) {
+                sessionFileOption = true;
+            } else if (args[i].startsWith("-w")) {
                 webstart_option = true;
-            } else if (p_args[i].startsWith("-test")) {
+            } else if (args[i].startsWith("-test")) {
                 test_version_option = true;
             }
         }
+
         if (!(OFFLINE_ALLOWED || webstart_option)) {
-            Runtime.getRuntime().exit(1);
+            logger.error("Offline not allowed or WebStart Option not present");
+            return;
         }
 
-        if (single_design_option) {
-            java.util.ResourceBundle resources = java.util.ResourceBundle.getBundle("gui/MainApplication", current_locale);
-            BoardFrame.Option board_option;
-            if (session_file_option) {
-                board_option = BoardFrame.Option.SESSION_FILE;
+        if (singleDesignOption) {
+            ResourceBundle resources = ResourceBundle.getBundle("gui/MainApplication", currentLocale);
+            BoardFrame.Option boardOption;
+
+            if (sessionFileOption) {
+                boardOption = BoardFrame.Option.SESSION_FILE;
             } else {
-                board_option = BoardFrame.Option.SINGLE_FRAME;
+                boardOption = BoardFrame.Option.SINGLE_FRAME;
             }
-            DesignFile design_file = DesignFile.get_instance(design_file_name, false);
+
+            DesignFile design_file = DesignFile.get_instance(designFileName, false);
+
             if (design_file == null) {
-                System.out.print(resources.getString("message_6") + " ");
-                System.out.print(design_file_name);
-                System.out.println(" " + resources.getString("message_7"));
+                logger.error(String.format("%s %s %s", resources.getString("message_6"), designFileName, resources.getString("message_7")));
                 return;
             }
-            String message = resources.getString("loading_design") + " " + design_file_name;
-            WindowMessage welcome_window = WindowMessage.show(message);
-            final BoardFrame new_frame =
-                    create_board_frame(design_file, null, board_option, test_version_option, current_locale);
-            welcome_window.dispose();
-            if (new_frame == null) {
-                Runtime.getRuntime().exit(1);
+
+            String message = resources.getString("loading_design") + " " + designFileName;
+            WindowMessage welcomeWindow = WindowMessage.show(message);
+            final BoardFrame boardFrame = createBoardFrame(design_file, null, boardOption, test_version_option, currentLocale);
+            if (boardFrame == null) {
+                logger.error("Unable to create Board Frame");
+                return;
             }
-            new_frame.addWindowListener(new java.awt.event.WindowAdapter() {
-                public void windowClosed(java.awt.event.WindowEvent evt) {
+
+            welcomeWindow.dispose();
+
+            boardFrame.addWindowListener(new WindowAdapter() {
+                public void windowClosed(WindowEvent evt) {
+                    logger.info("Window Closed");
                     Runtime.getRuntime().exit(0);
                 }
             });
         } else {
-            new MainApplication(design_dir_name, test_version_option, webstart_option, current_locale).setVisible(true);
+            new MainApplication(design_dir_name, test_version_option, webstart_option, currentLocale).setVisible(true);
         }
     }
 
     /**
      * Creates new form MainApplication
-     * It takes the directory of the org.thehellnet.tools.freerouting.board designs as optional argument.
+     * It takes the directory of the board designs as optional argument.
      */
-    public MainApplication(String p_design_dir, boolean p_is_test_version,
-                           boolean p_webstart_option, java.util.Locale p_current_locale) {
-        this.design_dir_name = p_design_dir;
-        this.is_test_version = p_is_test_version;
-        this.is_webstart = p_webstart_option;
-        this.locale = p_current_locale;
-        this.resources =
-                java.util.ResourceBundle.getBundle("gui/MainApplication", p_current_locale);
-        main_panel = new javax.swing.JPanel();
-        getContentPane().add(main_panel);
-        java.awt.GridBagLayout gridbag = new java.awt.GridBagLayout();
-        main_panel.setLayout(gridbag);
+    public MainApplication(String designDirName, boolean isTestVersion, boolean isWebStart, Locale locale) {
+        this.designDirName = designDirName;
+        this.isTestVersion = isTestVersion;
+        this.isWebStart = isWebStart;
+        this.locale = locale;
+        this.resources = ResourceBundle.getBundle("gui/MainApplication", locale);
 
-        java.awt.GridBagConstraints gridbag_constraints = new java.awt.GridBagConstraints();
-        gridbag_constraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        gridbag_constraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        JPanel mainPanel = new JPanel();
+        getContentPane().add(mainPanel);
 
-        demonstration_button = new javax.swing.JButton();
-        sample_board_button = new javax.swing.JButton();
-        open_board_button = new javax.swing.JButton();
-        restore_defaults_button = new javax.swing.JButton();
-        message_field = new javax.swing.JTextField();
-        message_field.setText("");
-        this.window_net_demonstrations = new WindowNetDemonstrations(p_current_locale);
-        java.awt.Point location = getLocation();
-        this.window_net_demonstrations.setLocation((int) location.getX() + 50, (int) location.getY() + 50);
-        this.window_net_sample_designs = new WindowNetSampleDesigns(p_current_locale);
-        this.window_net_sample_designs.setLocation((int) location.getX() + 90, (int) location.getY() + 90);
+        GridBagLayout gridBagLayout = new GridBagLayout();
+        mainPanel.setLayout(gridBagLayout);
+
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+
+        JButton demonstrationButton = new JButton();
+        JButton sampleBoardButton = new JButton();
+        JButton openBoardButton = new JButton();
+        JButton restoreDefaultsButton = new JButton();
+
+        messageField = new JTextField();
+        messageField.setText("");
+
+        Point location = getLocation();
+        this.windowNetDemonstrations = new WindowNetDemonstrations(locale);
+        this.windowNetDemonstrations.setLocation((int) location.getX() + 50, (int) location.getY() + 50);
+
+        this.windowNetSampleDesigns = new WindowNetSampleDesigns(locale);
+        this.windowNetSampleDesigns.setLocation((int) location.getX() + 90, (int) location.getY() + 90);
 
         setTitle(resources.getString("title"));
 
-        if (p_webstart_option) {
+        if (isWebStart) {
+            demonstrationButton.setText(resources.getString("router_demonstrations"));
+            demonstrationButton.setToolTipText(resources.getString("router_demonstrations_tooltip"));
+            demonstrationButton.addActionListener(evt -> windowNetDemonstrations.setVisible(true));
 
-            demonstration_button.setText(resources.getString("router_demonstrations"));
-            demonstration_button.setToolTipText(resources.getString("router_demonstrations_tooltip"));
-            demonstration_button.addActionListener(evt -> window_net_demonstrations.setVisible(true));
+            gridBagLayout.setConstraints(demonstrationButton, gridBagConstraints);
+            mainPanel.add(demonstrationButton, gridBagConstraints);
 
-            gridbag.setConstraints(demonstration_button, gridbag_constraints);
-            main_panel.add(demonstration_button, gridbag_constraints);
+            sampleBoardButton.setText(resources.getString("sample_designs"));
+            sampleBoardButton.setToolTipText(resources.getString("sample_designs_tooltip"));
+            sampleBoardButton.addActionListener(evt -> windowNetSampleDesigns.setVisible(true));
 
-            sample_board_button.setText(resources.getString("sample_designs"));
-            sample_board_button.setToolTipText(resources.getString("sample_designs_tooltip"));
-            sample_board_button.addActionListener(evt -> window_net_sample_designs.setVisible(true));
-
-            gridbag.setConstraints(sample_board_button, gridbag_constraints);
-            main_panel.add(sample_board_button, gridbag_constraints);
+            gridBagLayout.setConstraints(sampleBoardButton, gridBagConstraints);
+            mainPanel.add(sampleBoardButton, gridBagConstraints);
         }
 
-        open_board_button.setText(resources.getString("open_own_design"));
-        open_board_button.setToolTipText(resources.getString("open_own_design_tooltip"));
-        open_board_button.addActionListener(this::open_board_design_action);
+        openBoardButton.setText(resources.getString("open_own_design"));
+        openBoardButton.setToolTipText(resources.getString("open_own_design_tooltip"));
+        openBoardButton.addActionListener(this::openBoardDesignAction);
 
-        gridbag.setConstraints(open_board_button, gridbag_constraints);
-        main_panel.add(open_board_button, gridbag_constraints);
+        gridBagLayout.setConstraints(openBoardButton, gridBagConstraints);
+        mainPanel.add(openBoardButton, gridBagConstraints);
 
-        if (p_webstart_option) {
-            restore_defaults_button.setText(resources.getString("restore_defaults"));
-            restore_defaults_button.setToolTipText(resources.getString("restore_defaults_tooltip"));
-            restore_defaults_button.addActionListener(this::restore_defaults_action);
+        if (isWebStart) {
+            restoreDefaultsButton.setText(resources.getString("restore_defaults"));
+            restoreDefaultsButton.setToolTipText(resources.getString("restore_defaults_tooltip"));
+            restoreDefaultsButton.addActionListener(this::restoreDefaultsAction);
 
-            gridbag.setConstraints(restore_defaults_button, gridbag_constraints);
-            main_panel.add(restore_defaults_button, gridbag_constraints);
+            gridBagLayout.setConstraints(restoreDefaultsButton, gridBagConstraints);
+            mainPanel.add(restoreDefaultsButton, gridBagConstraints);
         }
 
-        message_field.setPreferredSize(new java.awt.Dimension(230, 20));
-        message_field.setRequestFocusEnabled(false);
-        gridbag.setConstraints(message_field, gridbag_constraints);
-        main_panel.add(message_field, gridbag_constraints);
+        messageField.setPreferredSize(new java.awt.Dimension(230, 20));
+        messageField.setRequestFocusEnabled(false);
+        gridBagLayout.setConstraints(messageField, gridBagConstraints);
+        mainPanel.add(messageField, gridBagConstraints);
 
-        this.addWindowListener(new WindowStateListener());
+        addWindowListener(new WindowStateListener());
         pack();
     }
 
     /**
      * opens a board design from a binary file or a specctra dsn file.
      */
-    private void open_board_design_action(java.awt.event.ActionEvent evt) {
+    private void openBoardDesignAction(ActionEvent evt) {
 
-        DesignFile design_file = DesignFile.open_dialog(this.is_webstart, this.design_dir_name);
+        DesignFile design_file = DesignFile.openDialog(isWebStart, designDirName);
 
         if (design_file == null) {
-            message_field.setText(resources.getString("message_3"));
+            messageField.setText(resources.getString("message_3"));
             return;
         }
 
         BoardFrame.Option option;
-        if (this.is_webstart) {
+        if (isWebStart) {
             option = BoardFrame.Option.WEBSTART;
         } else {
             option = BoardFrame.Option.FROM_START_MENU;
         }
         String message = resources.getString("loading_design") + " " + design_file.get_name();
-        message_field.setText(message);
-        WindowMessage welcome_window = WindowMessage.show(message);
-        welcome_window.setTitle(message);
-        BoardFrame new_frame =
-                create_board_frame(design_file, message_field, option, this.is_test_version, this.locale);
-        welcome_window.dispose();
-        if (new_frame == null) {
+        messageField.setText(message);
+        WindowMessage welcomeWindow = WindowMessage.show(message);
+        welcomeWindow.setTitle(message);
+        BoardFrame newFrame = createBoardFrame(design_file, messageField, option, isTestVersion, locale);
+        welcomeWindow.dispose();
+
+        if (newFrame == null) {
             return;
         }
-        message_field.setText(resources.getString("message_4") + " " + design_file.get_name() + " " + resources.getString("message_5"));
-        board_frames.add(new_frame);
-        new_frame.addWindowListener(new BoardFrameWindowListener(new_frame));
+
+        messageField.setText(resources.getString("message_4") + " " + design_file.get_name() + " " + resources.getString("message_5"));
+        boardFrames.add(newFrame);
+        newFrame.addWindowListener(new BoardFrameWindowListener(newFrame));
     }
 
     /**
      * Exit the Application
      */
-    private void exitForm(java.awt.event.WindowEvent evt) {
+    private void exitForm(WindowEvent evt) {
         System.exit(0);
     }
 
     /**
      * deletes the setting stored by the user if the application is run by Java Web Start
      */
-    private void restore_defaults_action(java.awt.event.ActionEvent evt) {
-        if (!is_webstart) {
+    private void restoreDefaultsAction(ActionEvent evt) {
+        if (!isWebStart) {
             return;
         }
-        boolean file_deleted = WebStart.delete_files(BoardFrame.GUI_DEFAULTS_FILE_NAME, resources.getString("confirm_delete"));
-        if (file_deleted) {
-            message_field.setText(resources.getString("defaults_restored"));
+
+        if (WebStart.deleteFiles(BoardFrame.GUI_DEFAULTS_FILE_NAME, resources.getString("confirm_delete"))) {
+            messageField.setText(resources.getString("defaults_restored"));
         } else {
-            message_field.setText(resources.getString("nothing_to_restore"));
+            messageField.setText(resources.getString("nothing_to_restore"));
         }
     }
 
     /**
-     * Creates a new org.thehellnet.tools.freerouting.board frame containing the data of the input design file.
+     * Creates a new board frame containing the data of the input design file.
      * Returns null, if an error occured.
      */
-    static private BoardFrame create_board_frame(DesignFile p_design_file, javax.swing.JTextField p_message_field,
-                                                 BoardFrame.Option p_option, boolean p_is_test_version, java.util.Locale p_locale) {
-        java.util.ResourceBundle resources =
-                java.util.ResourceBundle.getBundle("gui/MainApplication", p_locale);
+    private static BoardFrame createBoardFrame(DesignFile designFile, JTextField messageField,
+                                               BoardFrame.Option p_option, boolean isTestVersion, Locale p_locale) {
+        ResourceBundle resources =
+                ResourceBundle.getBundle("gui/MainApplication", p_locale);
 
-        java.io.InputStream input_stream = p_design_file.get_input_stream();
+        InputStream input_stream = designFile.getInputStream();
         if (input_stream == null) {
-            if (p_message_field != null) {
-                p_message_field.setText(resources.getString("message_8") + " " + p_design_file.get_name());
+            if (messageField != null) {
+                messageField.setText(resources.getString("message_8") + " " + designFile.get_name());
             }
             return null;
         }
 
-        TestLevel test_level;
-        if (p_is_test_version) {
-            test_level = DEBUG_LEVEL;
+        TestLevel testLevel;
+        if (isTestVersion) {
+            testLevel = DEBUG_LEVEL;
         } else {
-            test_level = TestLevel.RELEASE_VERSION;
+            testLevel = TestLevel.RELEASE_VERSION;
         }
-        BoardFrame new_frame = new BoardFrame(p_design_file, p_option, test_level, p_locale, !p_is_test_version);
-        boolean read_ok = new_frame.read(input_stream, p_design_file.is_created_from_text_file(), p_message_field);
-        if (!read_ok) {
+
+        BoardFrame newFrame = new BoardFrame(designFile, p_option, testLevel, p_locale, !isTestVersion);
+        if (!newFrame.read(input_stream, designFile.isCreatedFromTextFile(), messageField)) {
             return null;
         }
-        new_frame.menubar.add_design_dependent_items();
-        if (p_design_file.is_created_from_text_file()) {
-            // Read the file with the saved rules, if it is existing.
 
-            String file_name = p_design_file.get_name();
-            String[] name_parts = file_name.split("\\.");
-            String confirm_import_rules_message = resources.getString("confirm_import_rules");
-            DesignFile.read_rules_file(name_parts[0], p_design_file.get_parent(),
-                    new_frame.board_panel.board_handling, p_option == BoardFrame.Option.WEBSTART,
-                    confirm_import_rules_message);
-            new_frame.refresh_windows();
+        newFrame.menubar.addDesignDependentItems();
+
+        if (designFile.isCreatedFromTextFile()) {
+            String fileName = designFile.get_name();
+            String[] nameParts = fileName.split("\\.");
+            DesignFile.read_rules_file(nameParts[0],
+                    designFile.get_parent(),
+                    newFrame.boardPanel.boardHandling,
+                    p_option == BoardFrame.Option.WEBSTART,
+                    resources.getString("confirm_import_rules"));
+            newFrame.refresh_windows();
         }
-        return new_frame;
+
+        return newFrame;
     }
 
-    private class BoardFrameWindowListener extends java.awt.event.WindowAdapter {
+    private class BoardFrameWindowListener extends WindowAdapter {
 
-        public BoardFrameWindowListener(BoardFrame p_board_frame) {
-            this.board_frame = p_board_frame;
+        private BoardFrame boardFrame;
+
+        BoardFrameWindowListener(BoardFrame p_board_frame) {
+            this.boardFrame = p_board_frame;
         }
 
-        public void windowClosed(java.awt.event.WindowEvent evt) {
-            if (board_frame != null) {
-                // remove this board_frame from the list of org.thehellnet.tools.freerouting.board frames
-                board_frame.dispose();
-                board_frames.remove(board_frame);
-                board_frame = null;
+        @Override
+        public void windowClosed(WindowEvent evt) {
+            if (boardFrame != null) {
+                boardFrame.dispose();
+                boardFrames.remove(boardFrame);
+                boardFrame = null;
             }
         }
-
-        private BoardFrame board_frame;
     }
 
-    private class WindowStateListener extends java.awt.event.WindowAdapter {
+    private class WindowStateListener extends WindowAdapter {
 
-        public void windowClosing(java.awt.event.WindowEvent evt) {
+        @Override
+        public void windowClosing(WindowEvent evt) {
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             boolean exit_program = true;
-            if (!is_test_version && board_frames.size() > 0) {
-                int option = javax.swing.JOptionPane.showConfirmDialog(null, resources.getString("confirm_cancel"),
-                        null, javax.swing.JOptionPane.YES_NO_OPTION);
-                if (option == javax.swing.JOptionPane.NO_OPTION) {
+            if (!isTestVersion && boardFrames.size() > 0) {
+                int option = JOptionPane.showConfirmDialog(null, resources.getString("confirm_cancel"),
+                        null, JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.NO_OPTION) {
                     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
                     exit_program = false;
                 }
             }
+
             if (exit_program) {
                 exitForm(evt);
             }
         }
 
-        public void windowIconified(java.awt.event.WindowEvent evt) {
-            window_net_sample_designs.parent_iconified();
+        @Override
+        public void windowIconified(WindowEvent evt) {
+            windowNetSampleDesigns.parentIconified();
         }
 
-        public void windowDeiconified(java.awt.event.WindowEvent evt) {
-            window_net_sample_designs.parent_deiconified();
+        @Override
+        public void windowDeiconified(WindowEvent evt) {
+            windowNetSampleDesigns.parentDeiconified();
         }
     }
 }

@@ -159,7 +159,7 @@ public class WebStart
      * Return false, if no file to delete was found
      * If p_confirm_message != null, the user is asked to confirm the delete action.
      */
-    public static boolean delete_files(String p_file_ending, String p_confirm_messsage)
+    public static boolean deleteFiles(String p_file_ending, String p_confirm_messsage)
     {
         boolean file_deleted = false;
         try

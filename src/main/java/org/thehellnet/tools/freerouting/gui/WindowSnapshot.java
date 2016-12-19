@@ -127,16 +127,16 @@ public class WindowSnapshot extends BoardSavableSubWindow
         super.dispose();
     }
     
-    public void parent_iconified()
+    public void parentIconified()
     {
-        settings_window.parent_iconified();
-        super.parent_iconified();
+        settings_window.parentIconified();
+        super.parentIconified();
     }
     
-    public void parent_deiconified()
+    public void parentDeiconified()
     {
-        settings_window.parent_deiconified();
-        super.parent_deiconified();
+        settings_window.parentDeiconified();
+        super.parentDeiconified();
     }
     
     /**
@@ -187,7 +187,7 @@ public class WindowSnapshot extends BoardSavableSubWindow
         int index = list.getSelectedIndex();
         if (index >= 0 && list_model.getSize() > index)
         {
-            org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.board_panel.board_handling;
+            org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.boardPanel.boardHandling;
             org.thehellnet.tools.freerouting.interactive.SnapShot curr_snapshot =  (org.thehellnet.tools.freerouting.interactive.SnapShot) list_model.elementAt(index);
             
             curr_snapshot.go_to(board_handling);
@@ -209,9 +209,9 @@ public class WindowSnapshot extends BoardSavableSubWindow
                 {
                     board_handling.graphics_context.coordinate_transform = new org.thehellnet.tools.freerouting.boardgraphics.CoordinateTransform(curr_snapshot.graphics_context.coordinate_transform);
                     java.awt.Dimension panel_size = board_handling.graphics_context.get_panel_size();
-                    board_frame.board_panel.setSize(panel_size);
-                    board_frame.board_panel.setPreferredSize(panel_size);
-                    board_frame.board_panel.set_viewport_position(viewport_position);
+                    board_frame.boardPanel.setSize(panel_size);
+                    board_frame.boardPanel.setPreferredSize(panel_size);
+                    board_frame.boardPanel.set_viewport_position(viewport_position);
                 }
             }
             
@@ -243,7 +243,7 @@ public class WindowSnapshot extends BoardSavableSubWindow
     {
         public void actionPerformed(java.awt.event.ActionEvent p_evt)
         {
-            org.thehellnet.tools.freerouting.interactive.SnapShot new_snapshot = org.thehellnet.tools.freerouting.interactive.SnapShot.get_instance(name_field.getText(), board_frame.board_panel.board_handling);
+            org.thehellnet.tools.freerouting.interactive.SnapShot new_snapshot = org.thehellnet.tools.freerouting.interactive.SnapShot.get_instance(name_field.getText(), board_frame.boardPanel.boardHandling);
             if (new_snapshot != null)
             {
                 ++snapshot_count;

@@ -27,7 +27,9 @@ package org.thehellnet.tools.freerouting.board;
  *
  * @author alfons
  */
-public enum TestLevel
-{
-    RELEASE_VERSION, TEST_VERSION, CRITICAL_DEBUGGING_OUTPUT, ALL_DEBUGGING_OUTPUT
+public enum TestLevel {
+    RELEASE_VERSION,
+    TEST_VERSION,
+    CRITICAL_DEBUGGING_OUTPUT,
+    ALL_DEBUGGING_OUTPUT
 }

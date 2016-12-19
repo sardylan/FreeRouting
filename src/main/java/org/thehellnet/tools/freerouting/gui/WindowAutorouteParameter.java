@@ -31,7 +31,7 @@ public class WindowAutorouteParameter extends BoardSavableSubWindow
     /** Creates a new instance of WindowAutorouteParameter */
     public WindowAutorouteParameter(BoardFrame p_board_frame)
     {
-        this.board_handling = p_board_frame.board_panel.board_handling;
+        this.board_handling = p_board_frame.boardPanel.boardHandling;
         java.util.ResourceBundle resources =
                 java.util.ResourceBundle.getBundle("gui/WindowAutorouteParameter", p_board_frame.get_locale());
         this.setTitle(resources.getString("title"));
@@ -198,16 +198,16 @@ public class WindowAutorouteParameter extends BoardSavableSubWindow
         super.dispose();
     }
 
-    public void parent_iconified()
+    public void parentIconified()
     {
-        detail_window.parent_iconified();
-        super.parent_iconified();
+        detail_window.parentIconified();
+        super.parentIconified();
     }
 
-    public void parent_deiconified()
+    public void parentDeiconified()
     {
-        detail_window.parent_deiconified();
-        super.parent_deiconified();
+        detail_window.parentDeiconified();
+        super.parentDeiconified();
     }
     private final org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling;
     private final javax.swing.JLabel[] signal_layer_name_arr;

@@ -45,7 +45,7 @@ public class WindowClearanceViolations extends WindowObjectListWithFilter
     
     protected void fill_list()
     {
-        org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = this.board_frame.board_panel.board_handling;
+        org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = this.board_frame.boardPanel.boardHandling;
         
         ClearanceViolations clearance_violations =
                 new ClearanceViolations(board_handling.get_routing_board().get_items());
@@ -76,7 +76,7 @@ public class WindowClearanceViolations extends WindowObjectListWithFilter
             selected_items.add(curr_violation.second_item);
             
         }
-        org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.board_panel.board_handling;
+        org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.boardPanel.boardHandling;
         board_handling.select_items(selected_items);
         board_handling.toggle_selected_item_violations();
         board_handling.zoom_selection();
@@ -132,12 +132,12 @@ public class WindowClearanceViolations extends WindowObjectListWithFilter
         {
             this.violation = p_violation;
             FloatPoint board_location = p_violation.shape.centre_of_gravity();
-            this.location = board_frame.board_panel.board_handling.coordinate_transform.board_to_user(board_location);
+            this.location = board_frame.boardPanel.boardHandling.coordinate_transform.board_to_user(board_location);
         }
         
         public String toString()
         {
-            org.thehellnet.tools.freerouting.board.LayerStructure layer_structure =  board_frame.board_panel.board_handling.get_routing_board().layer_structure;
+            org.thehellnet.tools.freerouting.board.LayerStructure layer_structure =  board_frame.boardPanel.boardHandling.get_routing_board().layer_structure;
             String result = item_info(violation.first_item) + " - " + item_info(violation.second_item)
             + " " + resources.getString("at") + " " + location.to_string(board_frame.get_locale()) + " "
                     + resources.getString("on_layer") + " " + layer_structure.arr[violation.layer].name;

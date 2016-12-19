@@ -89,7 +89,7 @@ public class BoardPanel extends javax.swing.JPanel
         {
             public void keyTyped(java.awt.event.KeyEvent evt)
             {
-                board_handling.key_typed_action(evt.getKeyChar());
+                boardHandling.key_typed_action(evt.getKeyChar());
             }
         });
         addMouseListener(new java.awt.event.MouseAdapter()
@@ -104,7 +104,7 @@ public class BoardPanel extends javax.swing.JPanel
             }
             public void mouseReleased(java.awt.event.MouseEvent evt)
             {
-                board_handling.button_released();
+                boardHandling.button_released();
                 middle_drag_position = null ;
             }
         });
@@ -112,10 +112,10 @@ public class BoardPanel extends javax.swing.JPanel
         {
             public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt)
             {
-                board_handling.mouse_wheel_moved(evt.getWheelRotation());
+                boardHandling.mouse_wheel_moved(evt.getWheelRotation());
             }
         });
-        board_handling = new BoardHandling(this, p_locale);
+        boardHandling = new BoardHandling(this, p_locale);
         setAutoscrolls(true);
         this.setCursor(new java.awt.Cursor(java.awt.Cursor.CROSSHAIR_CURSOR));
     }
@@ -148,7 +148,7 @@ public class BoardPanel extends javax.swing.JPanel
     {
         if (evt.getButton() == 1)
         {
-            board_handling.mouse_pressed(evt.getPoint());
+            boardHandling.mouse_pressed(evt.getPoint());
         }
         else if (evt.getButton() == 2 && middle_drag_position == null)
         {
@@ -165,7 +165,7 @@ public class BoardPanel extends javax.swing.JPanel
         }
         else
         {
-            board_handling.mouse_dragged(evt.getPoint());
+            boardHandling.mouse_dragged(evt.getPoint());
             scroll_near_border(evt);
         }
     }
@@ -173,9 +173,9 @@ public class BoardPanel extends javax.swing.JPanel
     private void mouse_moved_action(java.awt.event.MouseEvent p_evt)
     {
         this.requestFocusInWindow(); // to enable keyboard aliases
-        if (board_handling != null)
+        if (boardHandling != null)
         {
-            board_handling.mouse_moved(p_evt.getPoint());
+            boardHandling.mouse_moved(p_evt.getPoint());
         }
         if (this.custom_cursor != null)
         {
@@ -188,11 +188,11 @@ public class BoardPanel extends javax.swing.JPanel
     {
         if (evt.getButton() == 1)
         {
-            board_handling.left_button_clicked(evt.getPoint());
+            boardHandling.left_button_clicked(evt.getPoint());
         }
         else if (evt.getButton() == 3)
         {
-            JPopupMenu curr_menu = board_handling.get_current_popup_menu();
+            JPopupMenu curr_menu = boardHandling.get_current_popup_menu();
             if (curr_menu != null)
             {
                 int curr_x = evt.getX();
@@ -220,9 +220,9 @@ public class BoardPanel extends javax.swing.JPanel
     public void paintComponent(Graphics p_g)
     {
         super.paintComponent(p_g);
-        if (board_handling != null)
+        if (boardHandling != null)
         {
-            board_handling.draw(p_g) ;
+            boardHandling.draw(p_g) ;
         }
         if (this.custom_cursor != null)
         {
@@ -295,9 +295,9 @@ public class BoardPanel extends javax.swing.JPanel
                 new java.awt.Point((int)(new_center.getX() - delta.getX()), (int)(new_center.getY() - delta.getY()));
         move_mouse(new_mouse_location);
         repaint();
-        this.board_handling.logfile.start_scope(org.thehellnet.tools.freerouting.interactive.LogfileScope.CENTER_DISPLAY);
+        this.boardHandling.logfile.start_scope(org.thehellnet.tools.freerouting.interactive.LogfileScope.CENTER_DISPLAY);
         org.thehellnet.tools.freerouting.planar.FloatPoint curr_corner = new org.thehellnet.tools.freerouting.planar.FloatPoint(p_new_center.getX(), p_new_center.getY());
-        this.board_handling.logfile.add_corner(curr_corner);
+        this.boardHandling.logfile.add_corner(curr_corner);
     }
     
     
@@ -326,7 +326,7 @@ public class BoardPanel extends javax.swing.JPanel
         int new_width = (int) Math.round(p_factor * old_size.getWidth());
         int new_height = (int) Math.round(p_factor * old_size.getHeight());
         Dimension new_size = new Dimension(new_width, new_height);
-        board_handling.graphics_context.change_panel_size(new_size);
+        boardHandling.graphics_context.change_panel_size(new_size);
         setPreferredSize(new_size);
         setSize(new_size);
         revalidate();
@@ -387,9 +387,9 @@ public class BoardPanel extends javax.swing.JPanel
     
     void init_colors()
     {
-        board_handling.graphics_context.item_color_table.addTableModelListener(new ColorTableListener());
-        board_handling.graphics_context.other_color_table.addTableModelListener(new ColorTableListener());
-        setBackground(board_handling.graphics_context.get_background_color());
+        boardHandling.graphics_context.item_color_table.addTableModelListener(new ColorTableListener());
+        boardHandling.graphics_context.other_color_table.addTableModelListener(new ColorTableListener());
+        setBackground(boardHandling.graphics_context.get_background_color());
     }
     
     private void scroll_near_border(java.awt.event.MouseEvent p_evt)
@@ -476,7 +476,7 @@ public class BoardPanel extends javax.swing.JPanel
     
     public final BoardFrame board_frame;
     
-    BoardHandling board_handling = null;
+    BoardHandling boardHandling = null;
     
     private final JScrollPane scroll_pane;
     Point2D right_button_click_location = null;
@@ -496,7 +496,7 @@ public class BoardPanel extends javax.swing.JPanel
         public void tableChanged(TableModelEvent p_event)
         {
             //redisplay org.thehellnet.tools.freerouting.board because some colors have changed.
-            setBackground(board_handling.graphics_context.get_background_color());
+            setBackground(boardHandling.graphics_context.get_background_color());
             repaint();
         }
     }

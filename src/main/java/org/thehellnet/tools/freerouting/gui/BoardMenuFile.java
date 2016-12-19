@@ -46,7 +46,7 @@ public class BoardMenuFile extends javax.swing.JMenu
                 public void actionPerformed(java.awt.event.ActionEvent evt)
                 {
                     boolean save_ok = file_menu.board_frame.save();
-                    file_menu.board_frame.board_panel.board_handling.close_files();
+                    file_menu.board_frame.boardPanel.boardHandling.close_files();
                     if (save_ok)
                     {
                         file_menu.board_frame.screen_messages.set_status_message(file_menu.resources.getString("save_message"));
@@ -155,7 +155,7 @@ public class BoardMenuFile extends javax.swing.JMenu
         {
             return;
         }
-        org.thehellnet.tools.freerouting.board.BasicBoard routing_board = this.board_frame.board_panel.board_handling.get_routing_board();
+        org.thehellnet.tools.freerouting.board.BasicBoard routing_board = this.board_frame.boardPanel.boardHandling.get_routing_board();
         boolean host_cad_is_eagle = routing_board.communication.host_cad_is_eagle();
 
         javax.swing.JMenuItem write_session_file_item = new javax.swing.JMenuItem();
@@ -235,7 +235,7 @@ public class BoardMenuFile extends javax.swing.JMenu
         else
         {
             board_frame.screen_messages.set_status_message(resources.getString("message_9"));
-            board_frame.board_panel.board_handling.start_logfile(filename);
+            board_frame.boardPanel.boardHandling.start_logfile(filename);
         }
     }
 
@@ -300,7 +300,7 @@ public class BoardMenuFile extends javax.swing.JMenu
         }
         else
         {
-            write_ok = org.thehellnet.tools.freerouting.gui.GUIDefaultsFile.write(board_frame, board_frame.board_panel.board_handling, output_stream);
+            write_ok = org.thehellnet.tools.freerouting.gui.GUIDefaultsFile.write(board_frame, board_frame.boardPanel.boardHandling, output_stream);
         }
         if (write_ok)
         {

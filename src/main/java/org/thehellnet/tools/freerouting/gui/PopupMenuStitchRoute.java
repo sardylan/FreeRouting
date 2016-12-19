@@ -32,7 +32,7 @@ public class PopupMenuStitchRoute extends PopupMenuDisplay
     public PopupMenuStitchRoute(BoardFrame p_board_frame)
     {
         super(p_board_frame);
-        org.thehellnet.tools.freerouting.board.LayerStructure layer_structure = board_panel.board_handling.get_routing_board().layer_structure;
+        org.thehellnet.tools.freerouting.board.LayerStructure layer_structure = board_panel.boardHandling.get_routing_board().layer_structure;
         
         if (layer_structure.arr.length > 0)
         {
@@ -51,7 +51,7 @@ public class PopupMenuStitchRoute extends PopupMenuDisplay
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_panel.board_handling.left_button_clicked(board_panel.right_button_click_location);
+                board_panel.boardHandling.left_button_clicked(board_panel.right_button_click_location);
             }
         });
         
@@ -63,7 +63,7 @@ public class PopupMenuStitchRoute extends PopupMenuDisplay
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_panel.board_handling.return_from_state();
+                board_panel.boardHandling.return_from_state();
             }
         });
         
@@ -75,13 +75,13 @@ public class PopupMenuStitchRoute extends PopupMenuDisplay
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_panel.board_handling.cancel_state();
+                board_panel.boardHandling.cancel_state();
             }
         });
         
         this.add(cancel_item, 2);
         
-        org.thehellnet.tools.freerouting.board.Layer curr_layer = layer_structure.arr[board_panel.board_handling.settings.get_layer()];
+        org.thehellnet.tools.freerouting.board.Layer curr_layer = layer_structure.arr[board_panel.boardHandling.settings.get_layer()];
         disable_layer_item(layer_structure.get_signal_layer_no(curr_layer));
     }
     

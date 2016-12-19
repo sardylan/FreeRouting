@@ -34,7 +34,7 @@ public class PopupMenuDisplay extends javax.swing.JPopupMenu
     /** Creates a new instance of PopupMenuDisplay */
     public PopupMenuDisplay(BoardFrame p_board_frame)
     {
-        this.board_panel = p_board_frame.board_panel;
+        this.board_panel = p_board_frame.boardPanel;
         java.util.ResourceBundle resources = 
                 java.util.ResourceBundle.getBundle("gui/Default", p_board_frame.get_locale());
         javax.swing.JMenuItem center_display_item = new javax.swing.JMenuItem();

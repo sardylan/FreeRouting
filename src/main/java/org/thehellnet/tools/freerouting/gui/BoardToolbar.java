@@ -56,7 +56,7 @@ class BoardToolbar extends javax.swing.JPanel
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_frame.board_panel.board_handling.set_select_menu_state();
+                board_frame.boardPanel.boardHandling.set_select_menu_state();
             }
         });
         
@@ -69,7 +69,7 @@ class BoardToolbar extends javax.swing.JPanel
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_frame.board_panel.board_handling.set_route_menu_state();
+                board_frame.boardPanel.boardHandling.set_route_menu_state();
             }
         });
         
@@ -82,7 +82,7 @@ class BoardToolbar extends javax.swing.JPanel
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_frame.board_panel.board_handling.set_drag_menu_state();
+                board_frame.boardPanel.boardHandling.set_drag_menu_state();
             }
         });
         
@@ -106,7 +106,7 @@ class BoardToolbar extends javax.swing.JPanel
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_frame.board_panel.board_handling.start_batch_autorouter();
+                board_frame.boardPanel.boardHandling.start_batch_autorouter();
             }
         });
         
@@ -125,8 +125,8 @@ class BoardToolbar extends javax.swing.JPanel
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_frame.board_panel.board_handling.cancel_state();
-                board_frame.board_panel.board_handling.undo();
+                board_frame.boardPanel.boardHandling.cancel_state();
+                board_frame.boardPanel.boardHandling.undo();
                 board_frame.refresh_windows();
             }
         });
@@ -140,7 +140,7 @@ class BoardToolbar extends javax.swing.JPanel
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_frame.board_panel.board_handling.redo();
+                board_frame.boardPanel.boardHandling.redo();
             }
         });
         
@@ -158,7 +158,7 @@ class BoardToolbar extends javax.swing.JPanel
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_frame.board_panel.board_handling.toggle_ratsnest();
+                board_frame.boardPanel.boardHandling.toggle_ratsnest();
             }
         });
         
@@ -171,7 +171,7 @@ class BoardToolbar extends javax.swing.JPanel
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_frame.board_panel.board_handling.toggle_clearance_violations();
+                board_frame.boardPanel.boardHandling.toggle_clearance_violations();
             }
         });
         
@@ -203,7 +203,7 @@ class BoardToolbar extends javax.swing.JPanel
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                board_frame.board_panel.board_handling.zoom_region();
+                board_frame.boardPanel.boardHandling.zoom_region();
             }
         });
         
@@ -244,10 +244,10 @@ class BoardToolbar extends javax.swing.JPanel
                         double input_value = ((Number)input).doubleValue();
                         if (input_value > 0)
                         {
-                            board_frame.board_panel.board_handling.change_user_unit_factor(input_value);
+                            board_frame.boardPanel.boardHandling.change_user_unit_factor(input_value);
                         }
                     }
-                    double unit_factor = board_frame.board_panel.board_handling.coordinate_transform.user_unit_factor;
+                    double unit_factor = board_frame.boardPanel.boardHandling.coordinate_transform.user_unit_factor;
                     unit_factor_field.setValue(unit_factor);
                     
                     board_frame.refresh_windows();
@@ -269,7 +269,7 @@ class BoardToolbar extends javax.swing.JPanel
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
                 org.thehellnet.tools.freerouting.board.Unit new_unit = (org.thehellnet.tools.freerouting.board.Unit) unit_combo_box.getSelectedItem();
-                board_frame.board_panel.board_handling.change_user_unit(new_unit);
+                board_frame.boardPanel.boardHandling.change_user_unit(new_unit);
                 board_frame.refresh_windows();
             }
         });
@@ -288,7 +288,7 @@ class BoardToolbar extends javax.swing.JPanel
      */
     void hilight_selected_button()
     {
-        org.thehellnet.tools.freerouting.interactive.InteractiveState interactive_state = this.board_frame.board_panel.board_handling.get_interactive_state();
+        org.thehellnet.tools.freerouting.interactive.InteractiveState interactive_state = this.board_frame.boardPanel.boardHandling.get_interactive_state();
         if (interactive_state instanceof org.thehellnet.tools.freerouting.interactive.RouteMenuState)
         {
             this.route_button.setSelected(true);

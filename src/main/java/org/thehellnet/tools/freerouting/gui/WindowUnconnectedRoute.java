@@ -46,7 +46,7 @@ public class WindowUnconnectedRoute extends WindowObjectListWithFilter
     
     protected void fill_list()
     {
-        org.thehellnet.tools.freerouting.board.BasicBoard routing_board = this.board_frame.board_panel.board_handling.get_routing_board();
+        org.thehellnet.tools.freerouting.board.BasicBoard routing_board = this.board_frame.boardPanel.boardHandling.get_routing_board();
         
         Set<Item> handled_items = new java.util.TreeSet<Item>();
         
@@ -112,7 +112,7 @@ public class WindowUnconnectedRoute extends WindowObjectListWithFilter
         {
             selected_items.addAll(((UnconnectedRouteInfo)selected_list_values[i]).item_list);
         }
-        org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.board_panel.board_handling;
+        org.thehellnet.tools.freerouting.interactive.BoardHandling board_handling = board_frame.boardPanel.boardHandling;
         board_handling.select_items(selected_items);
         board_handling.zoom_selection();
     }
